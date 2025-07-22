@@ -4,15 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Task } from './task/task';
+import { TaskList } from './task-list/task-list';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     App,
-    Task
+    Task,
+    TaskList
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CommonModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

@@ -1,0 +1,8 @@
+@for (task of tasks; track task.id) {
+<app-task 
+    [task]="task"
+    (taskAdded)="taskAdded($event)"
+    (taskDeleted)="taskDeleted($event)"
+>
+</app-task>
+}

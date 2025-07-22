@@ -1,11 +1,11 @@
 <div
-  class="flex items-center justify-between rounded-lg shadow-md px-2 py-1"
-  [ngClass]="{ 'bg-green-400': task?.completed, 'bg-white': !task?.completed }"
+  class="flex flex-wrap sm:flex-nowrap items-center justify-between rounded-lg shadow-md shadow-blue-100 px-2 py-1 mb-1"
+  [ngClass]="{ 'bg-blue-700 text-white': task.completed, 'bg-white': !task.completed }"
 >
 
   <!-- Existing task -->
-  <ng-container *ngIf="task">
-    <div class="flex items-center w-full">
+  <ng-container *ngIf="task.title != undefined">
+    <div class="flex flex-wrap sm:flex-nowrap items-center w-full">
       <!-- Checkbox for task completion -->
       <input
         type="checkbox"
@@ -31,7 +31,7 @@
         (keyup.esc)="editing = false"
       />
     </div>
-    <div *ngIf="!editing && !task.completed" class="flex items-center">
+    <div *ngIf="!editing && !task.completed" class="flex flex-wrap sm:flex-nowrap items-center">
       <button
         (click)="markAsEditing(taskInput)"
         class="cursor-pointer text-blue-500 hover:text-blue-700 mr-2"
@@ -45,7 +45,7 @@
         Delete
       </button>
     </div>
-    <div *ngIf="editing && !task.completed" class="flex items-center">
+    <div *ngIf="editing && !task.completed" class="flex flex-wrap sm:flex-nowrap items-center">
       <button
         (click)="editing = false"
         class="cursor-pointer  text-red-500 hover:text-red-700 mr-2"
@@ -62,8 +62,8 @@
   </ng-container>
 
   <!-- New task -->
-  <ng-container *ngIf="!task">
-    <div class="flex items-center w-full">
+  <ng-container *ngIf="task.title == undefined">
+    <div class="flex flex-wrap sm:flex-nowrap items-center w-full">
       <input type="checkbox" [checked]="false" [disabled]="true" class="mr-4" />
       <input
         #newTaskInput

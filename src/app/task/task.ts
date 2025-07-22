@@ -1,4 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { TaskType } from '../typing/taks';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-task',
@@ -7,12 +9,12 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
   styleUrl: './task.css'
 })
 export class Task {
-  @Input() task?: { id: number, title: string, completed: boolean };
+  @Input() task: TaskType = { id: uuidv4(), title: undefined, completed: false};
   
-  @Output() deleted = new EventEmitter<number>();
-  @Output() edited = new EventEmitter<{ id: number, title: string }>();
-  @Output() added = new EventEmitter<{ id: number, title: string, completed: boolean }>();
-  @Output() toggledCompleted = new EventEmitter<number>();
+  @Output() taskDeleted = new EventEmitter<string>();
+  @Output() taskEdited = new EventEmitter<TaskType>();
+  @Output() taskAdded = new EventEmitter<TaskType>();
+  @Output() taskToggledCompleted = new EventEmitter<TaskType>();
 
   editing: boolean = false;
   adding: boolean = false;
@@ -20,9 +22,9 @@ export class Task {
   newTitle: string = '';
 
   addTask(title: string) {
-    this.task = { id: Date.now(), title, completed: false };
-    this.added.emit(this.task);
+    this.task.title = title;
     this.adding = false;
+    this.taskAdded.emit(this.task);
   }
 
   markAsAdding(newTaskInput: HTMLInputElement) {
@@ -33,18 +35,18 @@ export class Task {
     }, 100);
   }
 
-  toggleTask(id: number) {
+  toggleTask(id: string) {
     if (this.task && this.task.id === id) {
       this.task.completed = !this.task.completed;
-      this.toggledCompleted.emit(id);
-      this.editing = false; // Stop editing when toggling completion
+      this.taskToggledCompleted.emit(this.task);
+      this.editing = false;
     }
   }  
 
-  editTask(id: number, title: string) {
+  editTask(id: string, title: string) {
     if (this.task && this.task.id === id) {
       this.task.title = title;
-      this.edited.emit({ id, title });
+      this.taskEdited.emit(this.task);
       this.editing = false;
     }
   }
@@ -57,10 +59,10 @@ export class Task {
     }, 100);
   }
 
-  deleteTask(id: number) {
+  deleteTask(id: string) {
     if (this.task && this.task.id === id) {
-      this.task = undefined;
-      this.deleted.emit(id);
+      this.task.title = undefined;
+      this.taskDeleted.emit(id);
     }
   }
 }
