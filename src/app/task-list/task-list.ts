@@ -9,7 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrl: './task-list.css'
 })
 export class TaskList {
-  tasks: TaskType[] = [{ id: uuidv4(), title: undefined, completed: false}];
+  protected tasks: TaskType[] = [{ id: uuidv4(), title: undefined, completed: false}];
+  protected qtdTasks = 0;
+  protected qtdTasksCompleted = 0;
 
   taskAdded(task: TaskType) {
     this.organizeTasks();
@@ -32,5 +34,15 @@ export class TaskList {
     this.tasks = [{ id: uuidv4(), title: undefined, completed: false}, ...this.tasks
       .filter(t => t.title)
       .sort((a,b) => ( Number(a.completed) - Number(b.completed)))];
+
+    this.countTasks();
+  }
+
+  countTasks() {
+    this.qtdTasks = this.qtdTasksCompleted = 0;
+    this.tasks.filter(t => t.title).forEach(t => {
+      if(t.completed) this.qtdTasksCompleted++;
+      this.qtdTasks++;
+    })
   }
 }

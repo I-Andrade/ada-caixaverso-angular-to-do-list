@@ -1,4 +1,5 @@
-@for (task of tasks; track task.id) {
+
+<div class="w-full p-2 max-h-[calc(100vh-5rem)] overflow-y-auto transition-all duration-500">@for (task of tasks; track task.id) {
     <app-task 
         [task]="task"
         (taskAdded)="taskAdded($event)"
@@ -7,4 +8,13 @@
         (taskEdited)="taskEdited($event)"
     >
     </app-task>
-}
+}</div>
+
+<div class="w-full p-2 flex justify-between italic text-orange-900 gap-2">
+    <div class="px-2 py-1 bg-slate-500 rounded-xl text-white">
+        {{qtdTasks}} tasks
+    </div>
+    <div class="px-2 py-1 bg-blue-700 rounded-xl text-green-500">
+        {{qtdTasksCompleted }} completed
+    </div>
+</div>

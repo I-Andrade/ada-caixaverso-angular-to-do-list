@@ -8,7 +8,9 @@
     transition-all duration-500"
   [ngClass]="{
     'bg-blue-700 text-white': task.completed,
-    'bg-white text-gray-900': !task.completed
+    'bg-white text-gray-900': !task.completed && !editing && !adding,
+    'bg-slate-200 text-gray-900 animate-pulse': !task.completed && editing,
+    'bg-stone-200 text-gray-900 animate-pulse': !task.completed && adding,
   }"
 >
   <!-- Existing task -->
@@ -25,10 +27,10 @@
       <input
         #taskInput
         type="text"
-        placeholder="Add a new task"
+        placeholder="Edit a task"
         class="flex-grow p-1 text-lg cursor-pointer focus-visible:rounded-2xl"
         [class.line-through]="task.completed"
-        [class.text-blue-300]="editing"
+        [class.text-blue-500]="editing"
         [value]="editing ? newTitle : task.title"
         (input)="newTitle = taskInput.value"
         [disabled]="!editing"
@@ -39,7 +41,7 @@
       />
 
       <!-- Buttons -->
-      <div class="w-full flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
+      <div class="flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
         <ng-container *ngIf="task.completed"><span class="font-bold text-green-500">OK</span></ng-container>
         <ng-container *ngIf="!editing && !task.completed">
           <button
@@ -63,8 +65,12 @@
             Cancel
           </button>
           <button
-            (click)="editTask(task.id, taskInput.value)"
-            class="cursor-pointer text-green-500 hover:text-green-700"
+            (click)="!newTitle.trim() ? null : editTask(task.id, newTitle)"
+            [disabled]="!newTitle.trim()"
+            [ngClass]="{
+              'text-green-500 hover:text-green-700 cursor-pointer': newTitle.trim().length,
+              'text-gray-500 cursor-not-allowed': !newTitle.trim()
+            }"
           >
             Save
           </button></ng-container
@@ -95,7 +101,7 @@
       />
 
       <!-- Buttons -->
-      <div class="w-full flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
+      <div class="flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
       <button
         *ngIf="!adding"
         (click)="markAsAdding(newTaskInput)"
@@ -103,8 +109,15 @@
       >
         Add
       </button>
-      <button
-        *ngIf="adding"
+      <ng-container *ngIf="adding">
+         <button
+            (click)="adding = false; newTaskInput.value = ''"
+            class="cursor-pointer text-red-500 hover:text-red-700"
+          >
+            Cancel
+          </button>
+          <button
+        
         (click)="!newTitle.trim() ? null : addTask(newTitle)"
         [disabled]="!newTitle.trim()"
         [ngClass]="{
@@ -115,6 +128,8 @@
       >
         Save
       </button>
+      </ng-container>
+      
     </div>
     </div>
 
