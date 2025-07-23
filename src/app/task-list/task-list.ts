@@ -20,9 +20,17 @@ export class TaskList {
     this.organizeTasks();
   }
 
+  taskEdited(task: TaskType) {
+    this.organizeTasks();
+  }
+  
+  taskToggledCompleted(task: TaskType) {
+    this.organizeTasks();
+  }
+
   organizeTasks() {
     this.tasks = [{ id: uuidv4(), title: undefined, completed: false}, ...this.tasks
-      .filter(t => t.title)];
-    
+      .filter(t => t.title)
+      .sort((a,b) => ( Number(a.completed) - Number(b.completed)))];
   }
 }
