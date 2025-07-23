@@ -1,15 +1,22 @@
 <div
-  class="flex flex-wrap sm:flex-nowrap items-center justify-between rounded-lg shadow-md shadow-blue-100 px-2 py-1 mb-1"
-  [ngClass]="{ 'bg-blue-700 text-white': task.completed, 'bg-white': !task.completed }"
+  class="
+    flex flex-wrap sm:flex-nowrap
+    justify-between items-center
+    rounded-lg
+    shadow-md shadow-blue-100
+    px-2 py-1 mb-1 
+    transition-all duration-500"
+  [ngClass]="{
+    'bg-blue-700 text-white': task.completed,
+    'bg-white text-gray-900': !task.completed
+  }"
 >
-
   <!-- Existing task -->
   <ng-container *ngIf="task.title != undefined">
-    <div class="flex flex-wrap sm:flex-nowrap items-center w-full">
+    <div class="w-full flex flex-wrap gap-1 sm:flex-nowrap items-center">
       <!-- Checkbox for task completion -->
       <input
         type="checkbox"
-        class="mr-4"
         [checked]="task.completed"
         (click)="toggleTask(task.id)"
       />
@@ -19,7 +26,7 @@
         #taskInput
         type="text"
         placeholder="Add a new task"
-        class="flex-grow mr-4 p-1 text-lg cursor-pointer focus-visible:rounded-2xl"
+        class="flex-grow p-1 text-lg cursor-pointer focus-visible:rounded-2xl"
         [class.line-through]="task.completed"
         [class.text-blue-300]="editing"
         [value]="editing ? newTitle : task.title"
@@ -30,72 +37,87 @@
         (keyup.enter)="editing ? editTask(task.id, newTitle) : null"
         (keyup.esc)="editing = false"
       />
-    </div>
-    <div *ngIf="!editing && !task.completed" class="flex flex-wrap sm:flex-nowrap items-center">
-      <button
-        (click)="markAsEditing(taskInput)"
-        class="cursor-pointer text-blue-500 hover:text-blue-700 mr-2"
-      >
-        Edit
-      </button>
-      <button
-        (click)="deleteTask(task.id)"
-        class="cursor-pointer text-red-500 hover:text-red-700"
-      >
-        Delete
-      </button>
-    </div>
-    <div *ngIf="editing && !task.completed" class="flex flex-wrap sm:flex-nowrap items-center">
-      <button
-        (click)="editing = false"
-        class="cursor-pointer  text-red-500 hover:text-red-700 mr-2"
-      >
-        Cancel
-      </button>
-      <button
-        (click)="editTask(task.id, taskInput.value)"
-        class="cursor-pointer text-green-500 hover:text-green-700 mr-2"
-      >
-        Save
-      </button>
+
+      <!-- Buttons -->
+      <div class="w-full flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
+        <ng-container *ngIf="task.completed"><span class="font-bold text-green-500">OK</span></ng-container>
+        <ng-container *ngIf="!editing && !task.completed">
+          <button
+            (click)="markAsEditing(taskInput)"
+            class="cursor-pointer text-blue-500 hover:text-blue-700"
+          >
+            Edit
+          </button>
+          <button
+            (click)="deleteTask(task.id)"
+            class="cursor-pointer text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
+        </ng-container>
+        <ng-container *ngIf="editing && !task.completed">
+          <button
+            (click)="editing = false"
+            class="cursor-pointer text-red-500 hover:text-red-700"
+          >
+            Cancel
+          </button>
+          <button
+            (click)="editTask(task.id, taskInput.value)"
+            class="cursor-pointer text-green-500 hover:text-green-700"
+          >
+            Save
+          </button></ng-container
+        >
+      </div>
     </div>
   </ng-container>
 
   <!-- New task -->
   <ng-container *ngIf="task.title == undefined">
-    <div class="flex flex-wrap sm:flex-nowrap items-center w-full">
-      <input type="checkbox" [checked]="false" [disabled]="true" class="mr-4" />
+    <div class="w-full flex flex-wrap gap-1 sm:flex-nowrap items-center">
+      
+      <!-- Checkbox disabled for task completion -->
+      <input type="checkbox" [checked]="false" [disabled]="true"/>
+
+      <!-- Input field for task title -->
       <input
         #newTaskInput
         type="text"
         placeholder="Add a new task"
-        class="flex-grow mr-4 p-1 text-lg cursor-pointer focus-visible:rounded-2xl text-blue-300"
+        class="flex-grow p-1 text-lg cursor-pointer focus-visible:rounded-2xl text-orange-500"
         (input)="newTitle = newTaskInput.value"
         (focus)="adding = true"
         (keyup.enter)="addTask(newTitle)"
-        (keyup.esc)="adding = false; newTaskInput.value = ''; newTaskInput.blur()"
+        (keyup.esc)="
+          adding = false; newTaskInput.value = ''; newTaskInput.blur()
+        "
       />
-    </div>
 
-    <div>
+      <!-- Buttons -->
+      <div class="w-full flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
       <button
         *ngIf="!adding"
         (click)="markAsAdding(newTaskInput)"
-        class="cursor-pointer text-blue-500 hover:text-blue-700 mr-2"
+        class="cursor-pointer text-blue-500 hover:text-blue-700"
       >
         Add
       </button>
-        <button
+      <button
         *ngIf="adding"
         (click)="!newTitle.trim() ? null : addTask(newTitle)"
         [disabled]="!newTitle.trim()"
-        [ngClass]="{ 
-          'text-green-500 hover:text-green-700 cursor-pointer': newTitle.trim().length,
-          'text-gray-500 cursor-not-allowed': !newTitle.trim() 
-          }"
-        >
+        [ngClass]="{
+          'text-green-500 hover:text-green-700 cursor-pointer':
+            newTitle.trim().length,
+          'text-gray-500 cursor-not-allowed': !newTitle.trim()
+        }"
+      >
         Save
-        </button>
+      </button>
     </div>
+    </div>
+
+    
   </ng-container>
 </div>
