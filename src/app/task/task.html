@@ -41,20 +41,20 @@
       />
 
       <!-- Buttons -->
-      <div class="flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
-        <ng-container *ngIf="task.completed"><span class="font-bold text-green-500">OK</span></ng-container>
+      <div class="flex flex-wrap gap-3 justify-end sm:flex-nowrap items-center">
+        <ng-container *ngIf="task.completed"><span class="font-bold text-green-500"><i class="fa fa-thumbs-up"></i></span></ng-container>
         <ng-container *ngIf="!editing && !task.completed">
           <button
             (click)="markAsEditing(taskInput)"
             class="cursor-pointer text-blue-500 hover:text-blue-700"
           >
-            Edit
+            <i class="fa fa-edit"></i>
           </button>
           <button
             (click)="deleteTask(task.id)"
             class="cursor-pointer text-red-500 hover:text-red-700"
           >
-            Delete
+            <i class="fa fa-trash-o"></i>
           </button>
         </ng-container>
         <ng-container *ngIf="editing && !task.completed">
@@ -62,7 +62,7 @@
             (click)="editing = false"
             class="cursor-pointer text-red-500 hover:text-red-700"
           >
-            Cancel
+            <i class="fa fa-ban"></i>
           </button>
           <button
             (click)="!newTitle.trim() ? null : editTask(task.id, newTitle)"
@@ -72,7 +72,7 @@
               'text-gray-500 cursor-not-allowed': !newTitle.trim()
             }"
           >
-            Save
+            <i class="fa fa-paper-plane"></i>
           </button></ng-container
         >
       </div>
@@ -101,20 +101,20 @@
       />
 
       <!-- Buttons -->
-      <div class="flex flex-wrap gap-1 justify-end sm:flex-nowrap items-center">
+      <div class="flex flex-wrap gap-3 justify-end sm:flex-nowrap items-center">
       <button
         *ngIf="!adding"
         (click)="markAsAdding(newTaskInput)"
         class="cursor-pointer text-blue-500 hover:text-blue-700"
       >
-        Add
+       <i class="fa fa-plus"></i>
       </button>
       <ng-container *ngIf="adding">
          <button
             (click)="adding = false; newTaskInput.value = ''"
             class="cursor-pointer text-red-500 hover:text-red-700"
           >
-            Cancel
+            <i class="fa fa-ban"></i>
           </button>
           <button
         
@@ -126,7 +126,7 @@
           'text-gray-500 cursor-not-allowed': !newTitle.trim()
         }"
       >
-        Save
+        <i class="fa fa-paper-plane"></i>
       </button>
       </ng-container>
       
