@@ -3,3 +3,7 @@
 body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+html {
+  scrollbar-color: blue #f2f2fc; /* thumb color, track color */
+}

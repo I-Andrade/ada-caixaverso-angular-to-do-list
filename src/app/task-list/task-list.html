@@ -1,5 +1,5 @@
 
-<div class="w-full p-2 max-h-[calc(100vh-5rem)] overflow-y-auto transition-all duration-500">@for (task of tasks; track task.id) {
+<div class="w-full p-2 max-h-[calc(100vh-6rem)] overflow-y-auto transition-all duration-500">@for (task of tasks; track task.id) {
     <app-task 
         [task]="task"
         (taskAdded)="taskAdded($event)"
